@@ -1,8 +1,8 @@
 package com.example.myProject.entities;
 
 import com.example.myProject.entitiesPk.OrderItemPk;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -11,26 +11,25 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_order_item")
-public class OrdemItem implements Serializable {
+public class OrderItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
-    private OrderItemPk id;
+    private OrderItemPk id = new OrderItemPk();
 
     private Integer quantity;
     private Double price;
 
-    public OrdemItem(){
+    public OrderItem(){
     }
 
-
-    public OrdemItem(Order order,Product product,Integer quantity, Double price) {
+    public OrderItem(Order order,Product product, Integer quantity, Double price) {
         id.setOrder(order);
         id.setProduct(product);
         this.quantity = quantity;
         this.price = price;
     }
-
+    @JsonIgnore
     public Order getOrder(){
         return id.getOrder();
     }
@@ -67,8 +66,8 @@ public class OrdemItem implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrdemItem ordemItem = (OrdemItem) o;
-        return Objects.equals(id, ordemItem.id);
+        OrderItem orderItem = (OrderItem) o;
+        return Objects.equals(id, orderItem.id);
     }
 
     @Override
